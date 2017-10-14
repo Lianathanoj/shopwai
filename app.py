@@ -36,11 +36,23 @@ def init_db():
     inbox = Category(name=u'Unfinished Tasks')
     done = Category(name=u'Finished Tasks')
 
-    item = Item(body=u'Milk', x_value=50, y_value=90)
-    item2 = Item(body=u'Cheese', x_value=140, y_value=180)
-    item3 = Item(body=u'Lettuce', x_value=300, y_value=100)
-    item4 = Item(body=u'Tomatoes', x_value=500, y_value=300)
-    db.session.add_all([inbox, done, item, item2, item3, item4])
+
+    # parse text file for product coordinates
+    file = open("product-info.txt", "r")
+    lines = file.readlines()
+    file.close()
+
+    product_items = []
+    for line in lines:
+        split_line = line.split(',')
+        item_name, x_coord, y_coord = split_line[0], split_line[1], split_line[2]
+        product_items.append(Item(body=unicode(item_name, "utf-8"), x_value=x_coord, y_value=y_coord))
+
+    # item = Item(body=u'Milk', x_value=50, y_value=90)
+    # item2 = Item(body=u'Cheese', x_value=140, y_value=180)
+    # item3 = Item(body=u'Lettuce', x_value=300, y_value=100)
+    # item4 = Item(body=u'Tomatoes', x_value=500, y_value=300)
+    db.session.add_all([inbox, done] + product_items)
     db.session.commit()
 
 @app.route('/', methods=['GET', 'POST'])

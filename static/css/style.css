@@ -40,11 +40,11 @@ footer a:hover {
 .ui-default text {fill: #000}
 
 /* heatmap colors (courtesy of colorbrewer2.org) */
-.RdYlBu .d6-6 {fill:#D73027;background:#D73027;color:#121212}
-.RdYlBu .d6-5 {fill:#FC8D59;background:#FC8D59;color:#121212}
-.RdYlBu .d6-4 {fill:#FEE090;background:#FEE090;color:#121212}
-.RdYlBu .d6-3 {fill:#E0F3F8;background:#E0F3F8;color:#121212}
-.RdYlBu .d6-2 {fill:#91BFDB;background:#91BFDB;color:#121212}
+.RdYlBu .d6-6 {fill:#ff00ff;background:#ff00ff;color:#121212}
+.RdYlBu .d6-5 {fill:#00ff80;background:#00ff80;color:#121212}
+.RdYlBu .d6-4 {fill:#D73027;background:#D73027;color:#121212}
+.RdYlBu .d6-3 {fill:#FC8D59;background:#FC8D59;color:#121212}
+.RdYlBu .d6-2 {fill:#FEE090;background:#FEE090;color:#121212}
 .RdYlBu .d6-1 {fill:#4575B4;background:#4575B4;color:#121212}
 
 /* overlays */
