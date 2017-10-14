@@ -37,9 +37,9 @@ def init_db():
     done = Category(name=u'Finished Tasks')
 
     item = Item(body=u'Milk', x_value=1, y_value=3)
-    item2 = Item(body=u'Cheese', x_value=2, y_value=9)
-    item3 = Item(body=u'Lettuce', x_value=7, y_value=4)
-    item4 = Item(body=u'Tomatoes', x_value=1, y_value=5)
+    item2 = Item(body=u'Cheese', x_value=17, y_value=9)
+    item3 = Item(body=u'Lettuce', x_value=7, y_value=20)
+    item4 = Item(body=u'Tomatoes', x_value=11, y_value=9)
     db.session.add_all([inbox, done, item, item2, item3, item4])
     db.session.commit()
 
@@ -60,7 +60,8 @@ def category(id):
     category = Category.query.get_or_404(id)
     categories = Category.query.all()
     items = category.items
-    return render_template('index.html', items=items,
+    item_coordinates = [{"x": item.x_value, "y": item.y_value, "value": 20} for item in items]
+    return render_template('index.html', items=items, item_coordinates=item_coordinates,
                            categories=categories, category_now=category)
 
 @app.route('/new-category', methods=['GET', 'POST'])
