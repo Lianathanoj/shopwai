@@ -17,24 +17,24 @@ $(document).ready(function() {
     // add new item
     $("#new-item").click(function() {
         if ($("#category-select").val() == null) {
-            Materialize.toast('分类还没选呢~', 4000)
+            Materialize.toast('There is no selected item.', 4000)
         } else if ($("#item-input").val() == '') {
-            Materialize.toast('你的todo是空的！', 4000)
+            Materialize.toast("Please input a list item.", 4000)
         } else if (parseInt($("#items-count").html(), 10) >= 15) {
-            Materialize.toast('Sorry，条目太多了，删掉几个吧。', 3000);
+            Materialize.toast('There are too many list items!', 3000);
         } else {
-            Materialize.toast('todo添加成功！', 3000, 'rounded');
+            Materialize.toast('Added successfully.', 3000, 'rounded');
             document.getElementById('add-item-form').submit()
         }
     });
 
     $("#new-category").click(function() {
         if ($("#category-input").val() == '') {
-            Materialize.toast('你什么都没有填呢~', 4000)
+            Materialize.toast('There is no selected category.', 4000)
         } else if (parseInt($("#category-count").html(), 10) >= 12) {
-            Materialize.toast('Sorry，分类太多了，删掉几个吧。', 3000);
+            Materialize.toast('There are too many categories!', 3000);
         } else {
-            Materialize.toast('分类添加成功！', 3000, 'rounded');
+            Materialize.toast('New category added succesfully.', 3000, 'rounded');
             document.getElementById('add-category-form').submit()
         }
     });
@@ -43,7 +43,7 @@ $(document).ready(function() {
 
     $(".item-done").click(function() {
         $(this).parent().slideUp();
-        Materialize.toast('Well Done +1', 3000, 'rounded')
+        Materialize.toast('Task completed', 3000, 'rounded')
     });
 
     $(".categories").hover(function() {
@@ -52,21 +52,17 @@ $(document).ready(function() {
     });
 
     $(".confirm-btn").click(function() {
-        Materialize.toast('修改成功~', 3000, 'rounded')
+        Materialize.toast('Confirmed', 3000, 'rounded')
     });
 
     $(".delete-item").click(function() {
         $(this).parent().slideUp();
-        Materialize.toast('删除成功~', 3000, 'rounded')
+        Materialize.toast('Deleted item', 3000, 'rounded')
     });
 
     $(".delete-category").click(function() {
         $(this).parent().slideUp();
-        Materialize.toast('删除成功~', 3000, 'rounded')
-    });
-
-    $(".signin").click(function() {
-        Materialize.toast('暂未添加用户系统，抱歉~', 3000)
+        Materialize.toast('Deleted category', 3000, 'rounded')
     });
 })
 
