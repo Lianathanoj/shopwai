@@ -100,14 +100,15 @@
                 {% endfor %}
             </div>
         </div>
+        {% if category_now.id == 1 %}
         <div class="center-align" id="demo"></div>
+        {% endif %}
     </div>
 
     <script>
         var jsonData = {
             "heatmap": {
                 "binSize": 1,
-                "units": "\u00B0C",
                 "map": {{item_coordinates|tojson}}
             }
         };

@@ -60,7 +60,10 @@ def category(id):
     category = Category.query.get_or_404(id)
     categories = Category.query.all()
     items = category.items
-    item_coordinates = [{"x": item.x_value, "y": item.y_value, "value": 20} for item in items]
+    for item in items:
+        print(item.x_value, item.y_value, item.body)
+    item_coordinates = [{"x": item.x_value, "y": item.y_value, "value": item.id} for item in items
+                        if (item.x_value is not None and item.y_value is not None)]
     return render_template('index.html', items=items, item_coordinates=item_coordinates,
                            categories=categories, category_now=category)
 
