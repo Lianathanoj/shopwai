@@ -36,11 +36,48 @@ def init_db():
     inbox = Category(name=u'Unfinished Tasks')
     done = Category(name=u'Finished Tasks')
 
-    item = Item(body=u'Milk', x_value=1, y_value=3)
-    item2 = Item(body=u'Cheese', x_value=17, y_value=9)
-    item3 = Item(body=u'Lettuce', x_value=7, y_value=20)
-    item4 = Item(body=u'Tomatoes', x_value=11, y_value=9)
-    db.session.add_all([inbox, done, item, item2, item3, item4])
+
+    # from firebase import firebase
+    # firebase = firebase.FirebaseApplication('https://shopwai-a7cc7.firebaseio.com', None)
+    # result = firebase.get('/users', None)
+    # print (result)
+
+    import pyrebase
+    import json
+    config = {
+        "apiKey": "AIzaSyAlDYWi8NBRGwooGwROV30VpXHjsWd7x5I",
+        "authDomain": "shopwai-a7cc7.firebaseapp.com",
+        "databaseURL": "https://shopwai-a7cc7.firebaseio.com",
+        "storageBucket": "",
+        "serviceAccount": "database key"
+    }
+
+    firebase = pyrebase.initialize_app(config)
+    dba = firebase.database()
+
+    # Add data
+    # data = {"name": "Mortimer 'Morty' Smith"}
+    # dba.child("users").child("Morty").set(data)
+
+    # Retrieve data
+    all_products = dba.child("Products").get()
+
+    # for all products
+    item_list = []
+    for key, product in all_products.val().items():
+        item = Item(body=product["name"], x_value=product["x"], y_value=product["y"])
+        # print item.body()
+        # print key
+        # print product["name"]
+        item_list = item_list + [item]
+
+    # item = Item(body=u'Milk', x_value=1, y_value=3)
+    # item2 = Item(body=u'Cheese', x_value=17, y_value=9)
+    # item3 = Item(body=u'Lettuce', x_value=7, y_value=20)
+    # item4 = Item(body=u'Tomatoes', x_value=11, y_value=9)
+    # db.session.add_all([inbox, done, item, item2, item3, item4])
+
+    db.session.add_all([inbox, done] + item_list)
     db.session.commit()
 
 @app.route('/', methods=['GET', 'POST'])
