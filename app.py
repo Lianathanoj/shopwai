@@ -18,6 +18,8 @@ db = SQLAlchemy(app)
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
+    x_value = db.Column(db.Integer)
+    y_value = db.Column(db.Integer)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), default=1)
 
 class Category(db.Model):
@@ -34,20 +36,12 @@ def init_db():
     inbox = Category(name=u'Unfinished Tasks')
     done = Category(name=u'Finished Tasks')
 
-    # shopping_list = Category(name=u'Task List 1')
-    # work = Category(name=u'Task List 2')
-    item = Item(body=u'Test1')
-    item2 = Item(body=u'Test2')
-    item3 = Item(body=u'Test3')
-    # item4 = Item(body=u'Cheese', category=shopping_list)
-    # item5 = Item(body=u'Lettuce', category=shopping_list)
-    # item6 = Item(body=u'Milk', category=shopping_list)
-    # item7 = Item(body=u'Go to work', category=done)
-    # item8 = Item(body=u'Fix car', category=work)
-    # db.session.add_all([inbox, done, item, item2, item3, item4, item5, item6, item7, item8])
-    db.session.add_all([inbox, done, item, item2, item3])
+    item = Item(body=u'Milk', x_value=1, y_value=3)
+    item2 = Item(body=u'Cheese', x_value=2, y_value=9)
+    item3 = Item(body=u'Lettuce', x_value=7, y_value=4)
+    item4 = Item(body=u'Tomatoes', x_value=1, y_value=5)
+    db.session.add_all([inbox, done, item, item2, item3, item4])
     db.session.commit()
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -61,7 +55,6 @@ def index():
         return redirect(url_for('category', id=category_id))
     return redirect(url_for('category', id=1))
 
-
 @app.route('/category/<int:id>')
 def category(id):
     category = Category.query.get_or_404(id)
@@ -70,7 +63,6 @@ def category(id):
     return render_template('index.html', items=items,
                            categories=categories, category_now=category)
 
-
 @app.route('/new-category', methods=['GET', 'POST'])
 def new_category():
     name = request.form.get('name')
@@ -78,7 +70,6 @@ def new_category():
     db.session.add(category)
     db.session.commit()
     return redirect(url_for('category', id=category.id))
-
 
 @app.route('/edit-item/<int:id>', methods=['GET', 'POST'])
 def edit_item(id):
@@ -89,7 +80,6 @@ def edit_item(id):
     db.session.commit()
     return redirect(url_for('category', id=category.id))
 
-
 @app.route('/edit-category/<int:id>', methods=['GET', 'POST'])
 def edit_category(id):
     category = Category.query.get_or_404(id)
@@ -97,7 +87,6 @@ def edit_category(id):
     db.session.add(category)
     db.session.commit()
     return redirect(url_for('category', id=category.id))
-
 
 @app.route('/done/<int:id>', methods=['GET', 'POST'])
 def done(id):
@@ -110,7 +99,6 @@ def done(id):
     db.session.commit()
     return redirect(url_for('category', id=category.id))
 
-
 @app.route('/delete-item/<int:id>')
 def del_item(id):
     item = Item.query.get_or_404(id)
@@ -121,7 +109,6 @@ def del_item(id):
     db.session.commit()
     return redirect(url_for('category', id=category.id))
 
-
 @app.route('/delete-category/<int:id>')
 def del_category(id):
     category = Category.query.get_or_404(id)
@@ -131,7 +118,6 @@ def del_category(id):
     db.session.commit()
     return redirect(url_for('category', id=1))
 
-
 if __name__ == '__main__':
     # init_db()
-    app.run(debug=True)
+    app.run()
