@@ -36,10 +36,10 @@ def init_db():
     inbox = Category(name=u'Unfinished Tasks')
     done = Category(name=u'Finished Tasks')
 
-    item = Item(body=u'Milk', x_value=1, y_value=3)
-    item2 = Item(body=u'Cheese', x_value=17, y_value=9)
-    item3 = Item(body=u'Lettuce', x_value=7, y_value=20)
-    item4 = Item(body=u'Tomatoes', x_value=11, y_value=9)
+    item = Item(body=u'Milk', x_value=50, y_value=90)
+    item2 = Item(body=u'Cheese', x_value=140, y_value=180)
+    item3 = Item(body=u'Lettuce', x_value=300, y_value=100)
+    item4 = Item(body=u'Tomatoes', x_value=500, y_value=300)
     db.session.add_all([inbox, done, item, item2, item3, item4])
     db.session.commit()
 

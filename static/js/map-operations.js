@@ -44,10 +44,10 @@
 // };
 
 var xscale = d3.scale.linear()
-        .domain([0,35.0])
+        .domain([0,700.0])
         .range([0,700]),
     yscale = d3.scale.linear()
-        .domain([0,30.0])
+        .domain([0,600.0])
         .range([0,600]),
     map = d3.floorplan().xScale(xscale).yScale(yscale),
     imagelayer = d3.floorplan.imagelayer(),
@@ -69,8 +69,8 @@ mapdata[imagelayer.id()] = [{
     url: 'https://i.imgur.com/OOSKum8.jpg',
     x: 0,
     y: 0,
-    height: 30,
-    width: 35
+    height: 600,
+    width: 700
 }];
 
 map.addLayer(imagelayer)
