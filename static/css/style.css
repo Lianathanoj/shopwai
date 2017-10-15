@@ -2,6 +2,60 @@ body {
     font-family: "Microsoft YaHei", "Open Sans", "Helvetica", Arial, sans-serif;
 }
 
+nav .brand-logo {
+    font-family: 'Pacifico', cursive;
+}
+
+.tabs .tab a ,
+.tabs .tab a:hover,
+.tabs .tab a.active {
+    color: rgba(35, 61, 155, 1);
+    font-weight: bold;
+    font-size: 2.5vw;
+}
+.tabs .indicator {
+    background-color: rgba(35, 61, 155, 0.1);
+    top: 0;
+    height: 100%;
+    margin: 0 auto;
+    width: 40%;
+}
+#tabs-swipe-demo {
+    margin-bottom: 2vh;
+}
+
+.items {
+    padding: 3vw;
+}
+
+#demo svg {
+    width: 100%;
+}
+
+.imagelayer image {
+    width: 100%;
+}
+
+.tabs-content, #demo, #demo svg, #demo #map-layers {
+    height: 800px !important;
+}
+
+.heatmap rect {
+    x: x + 30vw;
+}
+
+i.left {
+    font-size: 5vh;
+}
+
+.card-panel {
+    font-size: 3vmin;
+}
+
+.map-controls {
+    display: none;
+}
+
 footer a:hover {
     border-bottom: 1px solid black;
 }

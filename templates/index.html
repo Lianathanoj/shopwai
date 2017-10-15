@@ -8,47 +8,47 @@
     <link href="//cdn.bootcss.com/materialize/0.97.8/css/materialize.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
 </head>
 <body>
+    <!-- ================= NAVBAR begin ================= -->
     <div class="navbar">
         <nav class="light-blue lighten-1" role="navigation">
             <div class="nav-wrapper container"><a id="logo-container" href="http://task5.herokuapp.com" class="brand-logo">shopwai</a>
             </div>
         </nav>
     </div>
+    <!-- ================= NAVBAR end ================= -->
 
     <span class="hide" id="category-count">{{ categories|length }}</span>
     <span class="hide" id="items-count">{{ items|length }}</span>
 
-    <div class="row">
-            <form class="col s12 offset-l2" id="add-item-form" action="{{ url_for('index') }}" method="POST">
-                <div class="row">
 
-                    <div class="input-field col s7">
+    <div class="row">
+            <form class="col s12" id="add-item-form" action="{{ url_for('index') }}" method="POST">
+                <!-- <div class="row"> -->
+
+                    <div class="input-field col s6 offset-s2 l6 offset-l3">
                         <input class="validate" id="item-input" type="text" name="item" placeholder="Item Name"
                         onkeydown="if (event.keyCode == 13) document.getElementById('new-item').click()">
                     </div>
-                    <a class="waves-effect waves-light btn input-field" id="new-item" href="#"><i class="material-icons">add</i></a>
-                    <br>
-                </div>
+                    <a class="waves-effect waves-light btn input-field" id="new-item" href="#">Add</a>
+                <!-- </div> -->
             </form>
         </div>
 
-        <div>
+        <div class="row">
               <ul id="tabs-swipe-demo" class="tabs">
-            <li class="tab col s6"><a href="#swipe-1">Test 1</a></li>
-            <li class="tab col s6"><a class="active" href="#swipe-2">Test 2</a></li>
+            <li class="tab col s6"><a href="#swipe-1">Grocery List</a></li>
+            <li class="tab col s6"><a class="active" href="#swipe-2">Store Map</a></li>
 
           </ul>
-          <div id="swipe-1" class="col s12 blue">First tab content</div>
-          <div id="swipe-2" class="col s12 red">Second tab content</div>
+          <div id="swipe-1" class="col s12">
 
-        </div>
-
-        <div class="row">
+            <!-- <div class="row"> -->
 
             <div class="items">
-               <span class="category-name">{{ category_now.name }}</span>
+               <!-- <span class="category-name">{{ category_now.name }}</span> -->
                 {% for item in items %}
                 <div>
                     <p class="card-panel hoverable" id="item{{loop.index}}">
@@ -69,14 +69,36 @@
                     </form>
                 </div>
                 {% endfor %}
-            </div>
+            <!-- </div> -->
         </div>
-        {% if category_now.id == 1 %}
-        <div class="center-align" id="demo"></div>
-        <br>
-        <br>
-        <br>
-        {% endif %}
+
+          </div>
+
+
+
+
+
+
+
+
+          <div id="swipe-2" class="col s12">
+            <div class="row">
+                <div class="col s12">
+                {% if category_now.id == 1 %}
+            <div class="center-align" id="demo"></div>
+            <br>
+            <br>
+            <br>
+            {% endif %}
+            </div>
+          </div>
+
+        </div>
+
+
+
+        </div>
+
     </div>
 
     <script>

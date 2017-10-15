@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
     $('#tabs-swipe-demo').tabs({
         swipeable : true,
         responsiveThreshold : 1920
@@ -32,7 +31,7 @@ $(document).ready(function() {
         } else if (parseInt($("#items-count").html(), 10) >= 15) {
             Materialize.toast('There are too many list items!', 3000);
         } else {
-            Materialize.toast('Added successfully.', 3000, 'rounded');
+            Materialize.toast('Item added to list', 5000, 'rounded');
             document.getElementById('add-item-form').submit()
         }
     });
@@ -52,7 +51,7 @@ $(document).ready(function() {
 
     $(".item-done").click(function() {
         $(this).parent().slideUp();
-        Materialize.toast('Task completed', 3000, 'rounded')
+        Materialize.toast('Item checked', 5000, 'rounded')
     });
 
     // $(".categories").hover(function() {
@@ -66,7 +65,7 @@ $(document).ready(function() {
 
     $(".delete-item").click(function() {
         $(this).parent().slideUp();
-        Materialize.toast('Deleted item', 3000, 'rounded')
+        Materialize.toast('Item deleted', 5000, 'rounded')
     });
 
     // $(".delete-category").click(function() {
