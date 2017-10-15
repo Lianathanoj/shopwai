@@ -99,8 +99,9 @@ def index():
             global points
             global next_location
             current_items = CurrentItem.query.all()
+            current_items = [item for item in current_items if item.category_id == 1]
             print('current items')
-            print(current_items)
+            print([item.body for item in current_items if item.category_id == 1])
             if len([item for item in current_items if item.category_id == 1]) > 1:
                 current_items = sorted(current_items, key=lambda x: euclidean_distance_point(current_location, x))
                 print([item.body for item in current_items])
@@ -190,11 +191,18 @@ def done(id):
     global points
     global next_location
     current_items = CurrentItem.query.all()
+    current_items = [item for item in current_items if item.category_id == 1]
+    print('current items')
+    print([item.body for item in current_items if item.category_id == 1])
+
+    # once you remove an item from the list and there is more than one item, sort the closest items and set next location as the closest one
     if len([item for item in current_items if item.category_id == 1]) > 1:
         current_items_sorted = sorted(current_items, key=lambda x: euclidean_distance_point(current_location, x))
         next_location = (current_items_sorted[0].x_value, current_items_sorted[0].y_value)
+    # if you remove an item and have one item, choose that item
     elif len([item for item in current_items if item.category_id == 1]) == 1:
         next_location = (current_items[0].x_value, current_items[0].y_value)
+    # if there are no more items, the next location is the exit
     else:
         next_location = exit
     points = find_coordinates_between_points(current_location, next_location)
@@ -238,9 +246,13 @@ def greedy_algorithm(points, start=None):
     return path
 
 def euclidean_distance_point(first_point, second_point):
+    if None in first_point or second_point.x_value is None or second_point.y_value is None:
+        return 0
     return ((first_point[0] - second_point.x_value)**2 + (first_point[1] - second_point.y_value)**2) ** 0.5
 
 def euclidean_distance(first_point, second_point):
+    if first_point.x_value is None or first_point.y_value is None or second_point.x_value is None or second_point.y_value is None:
+        return 0
     return ((first_point.x_value - second_point.x_value)**2 + (first_point.y_value - second_point.y_value)**2) ** 0.5
 
 # y = mx + b
@@ -249,11 +261,21 @@ def find_coordinates_between_points(first_point, second_point):
     print(first_point)
     print("second point")
     print(second_point)
-    slope = (second_point[1] - first_point[1]) / (second_point[0] - first_point[0])
-    y_intercept = first_point[1] - slope * first_point[0]
-    coordinates = []
-    for x_value in range(min(first_point[0], second_point[0]), max(first_point[0], second_point[0])):
-        coordinates.append({"x": x_value, "y": slope * x_value + y_intercept})
+    if None in first_point or None in second_point:
+        return None
+    if (second_point[0] - first_point[0] != 0):
+        slope = (second_point[1] - first_point[1]) / (second_point[0] - first_point[0])
+        y_intercept = second_point[1] - slope * second_point[0]
+        coordinates = []
+        for x_value in range(min(first_point[0], second_point[0]), max(first_point[0], second_point[0])):
+            coordinates.append({"x": x_value, "y": (slope * x_value + y_intercept)})
+    elif num_unfinished > 1:
+        current_items = CurrentItem.query.all()
+        current_items = [item for item in current_items if item.category_id == 1]
+        coordinates = find_coordinates_between_points((current_items[0].x_value, current_items[0].y_value),
+                                                      (current_items[1].x_value, current_items[1].y_value))
+    else:
+        coordinates = find_coordinates_between_points(current_location, exit)
     return coordinates
 
 if __name__ == '__main__':
