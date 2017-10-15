@@ -52,6 +52,7 @@ def init_db():
 
     # parse text file for product coordinates
     file = open("product-info.txt", "r")
+    #file = open("product-info.txt", "r", encoding="utf-8")
     lines = file.readlines()
     file.close()
 
@@ -73,7 +74,8 @@ def index():
     print('hi')
     if request.method == 'POST':
         body = request.form.get('item')
-        category_id = request.form.get('category')
+        # category_id = request.form.get('category')
+        category_id = 1
         category = Category.query.get_or_404(category_id)
 
         try:
@@ -124,13 +126,13 @@ def category(id):
     return render_template('index.html', items=items, item_coordinates=item_coordinates,
                            categories=categories, category_now=category, points=points)
 
-@app.route('/new-category', methods=['GET', 'POST'])
-def new_category():
-    name = request.form.get('name')
-    category = Category(name=name)
-    db.session.add(category)
-    db.session.commit()
-    return redirect(url_for('category', id=category.id))
+# @app.route('/new-category', methods=['GET', 'POST'])
+# def new_category():
+#     name = request.form.get('name')
+#     category = Category(name=name)
+#     db.session.add(category)
+#     db.session.commit()
+#     return redirect(url_for('category', id=category.id))
 
 @app.route('/edit-item/<int:id>', methods=['GET', 'POST'])
 def edit_item(id):
@@ -155,13 +157,13 @@ def edit_item(id):
         db.session.commit()
         return redirect(url_for('category', id=category.id))
 
-@app.route('/edit-category/<int:id>', methods=['GET', 'POST'])
-def edit_category(id):
-    category = Category.query.get_or_404(id)
-    category.name = request.form.get('name')
-    db.session.add(category)
-    db.session.commit()
-    return redirect(url_for('category', id=category.id))
+# @app.route('/edit-category/<int:id>', methods=['GET', 'POST'])
+# def edit_category(id):
+#     category = Category.query.get_or_404(id)
+#     category.name = request.form.get('name')
+#     db.session.add(category)
+#     db.session.commit()
+#     return redirect(url_for('category', id=category.id))
 
 @app.route('/done/<int:id>', methods=['GET', 'POST'])
 def done(id):
@@ -208,14 +210,14 @@ def del_item(id):
         num_finished -= 1
     return redirect(url_for('category', id=category.id))
 
-@app.route('/delete-category/<int:id>')
-def del_category(id):
-    category = Category.query.get_or_404(id)
-    if category is None or id in [1, 2]:
-        return redirect(url_for('category', id=1))
-    db.session.delete(category)
-    db.session.commit()
-    return redirect(url_for('category', id=1))
+# @app.route('/delete-category/<int:id>')
+# def del_category(id):
+#     category = Category.query.get_or_404(id)
+#     if category is None or id in [1, 2]:
+#         return redirect(url_for('category', id=1))
+#     db.session.delete(category)
+#     db.session.commit()
+#     return redirect(url_for('category', id=1))
 
 def greedy_algorithm(points, start=None):
     if start is None:
