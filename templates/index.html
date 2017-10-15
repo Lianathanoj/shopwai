@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8"/>
-    <title>Task List</title>
+    <title>shopwai</title>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="//cdn.bootcss.com/materialize/0.97.8/css/materialize.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
     <div class="navbar">
         <nav class="light-blue lighten-1" role="navigation">
-            <div class="nav-wrapper container"><a id="logo-container" href="http://task5.herokuapp.com" class="brand-logo">Task List</a>
+            <div class="nav-wrapper container"><a id="logo-container" href="http://task5.herokuapp.com" class="brand-logo">shopwai</a>
             </div>
         </nav>
     </div>
@@ -20,29 +20,15 @@
     <span class="hide" id="category-count">{{ categories|length }}</span>
     <span class="hide" id="items-count">{{ items|length }}</span>
 
-    <div class="container"><br>
-        <div class="row">
+    <div class="row">
             <form class="col s12 offset-l2" id="add-item-form" action="{{ url_for('index') }}" method="POST">
                 <div class="row">
-                    <div class="input-field col s3">
-                        <select id="category-select" name="category">
-                            {% if category_now.id == 2 %}
-                            <option value="" selected disabled>Choose a list</option>
-                            {% else %}
-                            <option value="{{ category_now.id }}" selected>{{ category_now.name }}</option>
-                            {% endif %}
-                            {% for category in categories %}
-                                {% if category != category_now and category.id != 2 %}
-                                <option value="{{ category.id }}">{{ category.name }}</option>
-                                {% endif %}
-                            {% endfor%}
-                        </select>
-                    </div>
-                    <div class="input-field col s3">
-                        <input class="validate" id="item-input" type="text" name="item" placeholder="List Item Name"
+
+                    <div class="input-field col s7">
+                        <input class="validate" id="item-input" type="text" name="item" placeholder="Item Name"
                         onkeydown="if (event.keyCode == 13) document.getElementById('new-item').click()">
                     </div>
-                    <a class="waves-effect waves-light btn input-field" id="new-item" href="#"><i class="material-icons right">add</i>Add List Item</a>
+                    <a class="waves-effect waves-light btn input-field" id="new-item" href="#"><i class="material-icons">add</i></a>
                     <br>
                 </div>
             </form>
@@ -50,26 +36,18 @@
 
         <div>
               <ul id="tabs-swipe-demo" class="tabs">
-            <li class="tab col s3"><a href="#swipe-1">Test 1</a></li>
-            <li class="tab col s3"><a class="active" href="#swipe-2">Test 2</a></li>
-            <li class="tab col s3"><a href="#swipe-3">Test 3</a></li>
+            <li class="tab col s6"><a href="#swipe-1">Test 1</a></li>
+            <li class="tab col s6"><a class="active" href="#swipe-2">Test 2</a></li>
+
           </ul>
           <div id="swipe-1" class="col s12 blue">First tab content</div>
           <div id="swipe-2" class="col s12 red">Second tab content</div>
-          <div id="swipe-3" class="col s12 green">Third tab content</div>
+
         </div>
 
         <div class="row">
-            <div class="col s12 m4 l4">
-                <div class="right-align nav-button">
-                    <a class="waves-effect waves-light btn blue center-align" href="{{ url_for('category', id=1) }}"><i class="material-icons left">email</i>Unfinished - {{ categories[0].items|length }}</a>
-                    <br><br>
-                    <a class="waves-effect waves-light btn green center-align" href="{{ url_for('category', id=2) }}"><i class="material-icons left">done</i>Finished - {{ categories[1].items|length }}</a>
-                    <br><br>
-                </div>
-            </div>
 
-            <div class="col s12 m8 l6 items">
+            <div class="items">
                <span class="category-name">{{ category_now.name }}</span>
                 {% for item in items %}
                 <div>
