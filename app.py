@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'a secret string'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite://')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://shopwai_3308:j9ulijQe_In58vAaiFJp@22381c99-afb2-429e-8a60-b410880593ac.shopwai-3308.mysql.dbs.scalingo.com:31363/shopwai_3308?useSSL=true&verifyServerCertificate=false'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['DEBUG'] = True
 db = SQLAlchemy(app)
