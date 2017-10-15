@@ -15,9 +15,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['DEBUG'] = True
 db = SQLAlchemy(app)
 
-entrance = (350, 600) # bottom middle
-exit = (700, 300) # right middle
-
 class StockItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
@@ -68,8 +65,15 @@ def init_db():
 def index():
     if request.method == 'POST':
         body = request.form.get('item')
+        # print(body)
         category_id = request.form.get('category')
         category = Category.query.get_or_404(category_id)
+        # print(unicode(body.decode('utf-8').lower().encode('utf-8')), 'utf-8')
+        # item = Item.query.filter(Item.body == unicode(body.decode('utf-8').lower().encode('utf-8')), 'utf-8')
+        # item = Item.query.all()
+        # print(item)
+        # if item is None:
+        # item = Item(body=body, category=category)
 
         try:
             stock_item = StockItem.query.filter_by(body=body).one()
@@ -109,29 +113,10 @@ def new_category():
 def edit_item(id):
     item = CurrentItem.query.get_or_404(id)
     category = item.category
-    old_body = item.body
-    edited_body = request.form.get('body')
-    # item.body = edited_body
-    # db.session.add(item)
-    # db.session.commit()
-    # return redirect(url_for('category', id=category.id))
-
-    try:
-        # item exists in the database
-        stock_item = StockItem.query.filter_by(body=edited_body).one()
-        db.session.delete(item)
-        item = CurrentItem(body=stock_item.body, category=category,
-                           x_value=stock_item.x_value,y_value=stock_item.y_value)
-        db.session.add(item)
-        db.session.commit()
-        return redirect(url_for('category', id=category.id))
-    except:
-        # item doesn't exist in the database, so take out the coordinates
-        db.session.delete(item)
-        db.session.add(CurrentItem(body=edited_body, category=category,
-                                   x_value=None, y_value=None))
-        db.session.commit()
-        return redirect(url_for('category', id=category.id))
+    item.body = request.form.get('body')
+    db.session.add(item)
+    db.session.commit()
+    return redirect(url_for('category', id=category.id))
 
 @app.route('/edit-category/<int:id>', methods=['GET', 'POST'])
 def edit_category(id):
