@@ -17,6 +17,9 @@ db = SQLAlchemy(app)
 
 entrance = (350, 600) # bottom middle
 exit = (700, 300) # right middle
+current_location = entrance
+num_unfinished = 0
+num_finished = 0
 
 class StockItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -44,7 +47,6 @@ def init_db():
     db.create_all()
     inbox = Category(name=u'Unfinished Tasks')
     done = Category(name=u'Finished Tasks')
-
 
     # parse text file for product coordinates
     file = open("product-info.txt", "r")
@@ -77,11 +79,21 @@ def index():
                               x_value=stock_item.x_value,y_value=stock_item.y_value)
             db.session.add(item)
             db.session.commit()
-            return redirect(url_for('category', id=category_id))
+            # return redirect(url_for('category', id=category_id))
         except:
             item = CurrentItem(body=body, category=category)
             db.session.add(item)
             db.session.commit()
+        finally:
+            current_items = CurrentItem.query.all()
+            if len(current_items) > 1:
+                ordered_items = [(current_item.body, current_item.category, current_item.x_value, current_item.y_value)
+                                 for current_item in greedy_algorithm(current_items)]
+                db.session.query(CurrentItem).delete()
+                ordered_items = [CurrentItem(body=current_item[0], category=current_item[1], x_value=current_item[2],
+                                             y_value=current_item[3]) for current_item in ordered_items]
+                db.session.add_all(ordered_items)
+                db.session.commit()
             return redirect(url_for('category', id=category_id))
     return redirect(url_for('category', id=1))
 
@@ -90,8 +102,6 @@ def category(id):
     category = Category.query.get_or_404(id)
     categories = Category.query.all()
     items = category.items
-    # for item in items:
-    #     print(item.x_value, item.y_value, item.body)
     item_coordinates = [{"x": item.x_value, "y": item.y_value, "value": item.id} for item in items
                         if (item.x_value is not None and item.y_value is not None)]
     return render_template('index.html', items=items, item_coordinates=item_coordinates,
@@ -109,12 +119,7 @@ def new_category():
 def edit_item(id):
     item = CurrentItem.query.get_or_404(id)
     category = item.category
-    old_body = item.body
     edited_body = request.form.get('body')
-    # item.body = edited_body
-    # db.session.add(item)
-    # db.session.commit()
-    # return redirect(url_for('category', id=category.id))
 
     try:
         # item exists in the database
@@ -143,7 +148,13 @@ def edit_category(id):
 
 @app.route('/done/<int:id>', methods=['GET', 'POST'])
 def done(id):
+    global num_finished
+    num_finished += 1
     item = CurrentItem.query.get_or_404(id)
+
+    global current_location
+    current_location = (item.x_value, item.y_value)
+
     category = item.category
     done_category = Category.query.get_or_404(2)
     done_item = CurrentItem(body=item.body, category=done_category)
@@ -160,6 +171,12 @@ def del_item(id):
         return redirect(url_for('category', id=1))
     db.session.delete(item)
     db.session.commit()
+    if category == 1:
+        global num_unfinished
+        num_unfinished -= 1
+    else:
+        global num_finished
+        num_finished -= 1
     return redirect(url_for('category', id=category.id))
 
 @app.route('/delete-category/<int:id>')
@@ -170,6 +187,21 @@ def del_category(id):
     db.session.delete(category)
     db.session.commit()
     return redirect(url_for('category', id=1))
+
+def greedy_algorithm(points, start=None):
+    if start is None:
+        start = points[0]
+    must_visit = points
+    path = [start]
+    must_visit.remove(start)
+    while must_visit:
+        nearest = min(must_visit, key=lambda x: euclidean_distance(path[-1], x))
+        path.append(nearest)
+        must_visit.remove(nearest)
+    return path
+
+def euclidean_distance(first_point, second_point):
+    return ((first_point.x_value - second_point.x_value)**2 + (first_point.y_value - second_point.y_value)**2) ** 0.5
 
 if __name__ == '__main__':
     # init_db()
