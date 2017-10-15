@@ -77,6 +77,12 @@ def index():
         # category_id = request.form.get('category')
         category_id = 1
         category = Category.query.get_or_404(category_id)
+        # print(unicode(body.decode('utf-8').lower().encode('utf-8')), 'utf-8')
+        # item = Item.query.filter(Item.body == unicode(body.decode('utf-8').lower().encode('utf-8')), 'utf-8')
+        # item = Item.query.all()
+        # print(item)
+        # if item is None:
+        # item = Item(body=body, category=category)
 
         try:
             stock_item = StockItem.query.filter_by(body=body).one()
