@@ -13,7 +13,26 @@ nav .brand-logo {
 
 }
 
-
+@media (max-width: 812px) {
+    #demo svg {
+        margin: -10vmin;
+    }
+}
+@media (max-width: 660px) {
+    #demo svg {
+        margin: -20vmin;
+    }
+}
+@media (max-width: 560px) {
+    #demo svg {
+        margin: -30vmin;
+    }
+}
+@media (max-width: 460px) {
+    #demo svg {
+        margin: -40vmin;
+    }
+}
 
 .tabs .tab a ,
 .tabs .tab a:hover,

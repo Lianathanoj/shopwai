@@ -246,9 +246,13 @@ def greedy_algorithm(points, start=None):
     return path
 
 def euclidean_distance_point(first_point, second_point):
+    if None in first_point or second_point.x_value is None or second_point.y_value is None:
+        return 0
     return ((first_point[0] - second_point.x_value)**2 + (first_point[1] - second_point.y_value)**2) ** 0.5
 
 def euclidean_distance(first_point, second_point):
+    if first_point.x_value is None or first_point.y_value is None or second_point.x_value is None or second_point.y_value is None:
+        return 0
     return ((first_point.x_value - second_point.x_value)**2 + (first_point.y_value - second_point.y_value)**2) ** 0.5
 
 # y = mx + b
@@ -257,15 +261,17 @@ def find_coordinates_between_points(first_point, second_point):
     print(first_point)
     print("second point")
     print(second_point)
+    if None in first_point or None in second_point:
+        return None
     if (second_point[0] - first_point[0] != 0):
         slope = (second_point[1] - first_point[1]) / (second_point[0] - first_point[0])
         y_intercept = first_point[1] - slope * first_point[0]
         coordinates = []
         for x_value in range(min(first_point[0], second_point[0]), max(first_point[0], second_point[0])):
-            coordinates.append({"x": x_value, "y": slope * x_value + y_intercept})
+            coordinates.append({"x": x_value, "y": (slope * x_value + y_intercept)})
     else:
         coordinates = find_coordinates_between_points(current_location, exit)
-    return coordinates
+    return coordinates[len(coordinates) / 6 : 5 * len(coordinates) / 6]
 
 if __name__ == '__main__':
     # init_db()

@@ -91,7 +91,7 @@ var loadData = function(data) {
 
     mapdata[imagelayer.id()][0].width = w;
 
-    d3.select("#demo").append("svg")
+    d3.select("#demo").append("svg").attr("viewBox", "0 0 700 600")
         .attr("height", h).attr("width",w)
         .datum(mapdata).call(map);
 };
