@@ -86,7 +86,7 @@ def index():
             db.session.commit()
         finally:
             current_items = CurrentItem.query.all()
-            if len(current_items) > 1:
+            if len([item for item in current_items if item.category == 1]) > 1:
                 ordered_items = [(current_item.body, current_item.category, current_item.x_value, current_item.y_value)
                                  for current_item in greedy_algorithm(current_items)]
                 db.session.query(CurrentItem).delete()
@@ -154,6 +154,7 @@ def done(id):
 
     global current_location
     current_location = (item.x_value, item.y_value)
+    print(current_location)
 
     category = item.category
     done_category = Category.query.get_or_404(2)
