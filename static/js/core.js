@@ -1,4 +1,11 @@
 $(document).ready(function() {
+
+
+    $('#tabs-swipe-demo').tabs({
+        swipeable : true,
+        responsiveThreshold : 1920
+    });
+
     // edit item
     $(".edit-btn").on('click', function () {
       var itemId = this.id;
