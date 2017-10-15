@@ -15,7 +15,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['DEBUG'] = True
 db = SQLAlchemy(app)
 
-class Item(db.Model):
+class StockItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    x_value = db.Column(db.Integer)
+    y_value = db.Column(db.Integer)
+
+class CurrentItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
     x_value = db.Column(db.Integer)
@@ -25,7 +31,7 @@ class Item(db.Model):
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
-    items = db.relationship('Item', backref='category')
+    items = db.relationship('CurrentItem', backref='category')
 
 # only for local test
 @app.before_first_request
@@ -46,7 +52,7 @@ def init_db():
     for line in lines:
         split_line = line.split(',')
         item_name, x_coord, y_coord = split_line[0], split_line[1], split_line[2]
-        product_items.append(Item(body=unicode(item_name, "utf-8"), x_value=x_coord, y_value=y_coord))
+        product_items.append(StockItem(body=unicode(item_name, "utf-8"), x_value=x_coord, y_value=y_coord))
 
     # item = Item(body=u'Milk', x_value=50, y_value=90)
     # item2 = Item(body=u'Cheese', x_value=140, y_value=180)
@@ -59,12 +65,28 @@ def init_db():
 def index():
     if request.method == 'POST':
         body = request.form.get('item')
+        # print(body)
         category_id = request.form.get('category')
         category = Category.query.get_or_404(category_id)
-        item = Item(body=body, category=category)
-        db.session.add(item)
-        db.session.commit()
-        return redirect(url_for('category', id=category_id))
+        # print(unicode(body.decode('utf-8').lower().encode('utf-8')), 'utf-8')
+        # item = Item.query.filter(Item.body == unicode(body.decode('utf-8').lower().encode('utf-8')), 'utf-8')
+        # item = Item.query.all()
+        # print(item)
+        # if item is None:
+        # item = Item(body=body, category=category)
+
+        try:
+            stock_item = StockItem.query.filter_by(body=body).one()
+            item = CurrentItem(body=stock_item.body, category=category,
+                              x_value=stock_item.x_value,y_value=stock_item.y_value)
+            db.session.add(item)
+            db.session.commit()
+            return redirect(url_for('category', id=category_id))
+        except:
+            item = CurrentItem(body=body, category=category)
+            db.session.add(item)
+            db.session.commit()
+            return redirect(url_for('category', id=category_id))
     return redirect(url_for('category', id=1))
 
 @app.route('/category/<int:id>')
@@ -72,8 +94,8 @@ def category(id):
     category = Category.query.get_or_404(id)
     categories = Category.query.all()
     items = category.items
-    for item in items:
-        print(item.x_value, item.y_value, item.body)
+    # for item in items:
+    #     print(item.x_value, item.y_value, item.body)
     item_coordinates = [{"x": item.x_value, "y": item.y_value, "value": item.id} for item in items
                         if (item.x_value is not None and item.y_value is not None)]
     return render_template('index.html', items=items, item_coordinates=item_coordinates,
@@ -89,7 +111,7 @@ def new_category():
 
 @app.route('/edit-item/<int:id>', methods=['GET', 'POST'])
 def edit_item(id):
-    item = Item.query.get_or_404(id)
+    item = CurrentItem.query.get_or_404(id)
     category = item.category
     item.body = request.form.get('body')
     db.session.add(item)
@@ -106,10 +128,10 @@ def edit_category(id):
 
 @app.route('/done/<int:id>', methods=['GET', 'POST'])
 def done(id):
-    item = Item.query.get_or_404(id)
+    item = CurrentItem.query.get_or_404(id)
     category = item.category
     done_category = Category.query.get_or_404(2)
-    done_item = Item(body=item.body, category=done_category)
+    done_item = CurrentItem(body=item.body, category=done_category)
     db.session.add(done_item)
     db.session.delete(item)
     db.session.commit()
@@ -117,7 +139,7 @@ def done(id):
 
 @app.route('/delete-item/<int:id>')
 def del_item(id):
-    item = Item.query.get_or_404(id)
+    item = CurrentItem.query.get_or_404(id)
     category = item.category
     if item is None:
         return redirect(url_for('category', id=1))
