@@ -76,7 +76,7 @@ mapdata[imagelayer.id()] = [{
 map.addLayer(imagelayer)
     .addLayer(heatmap)
     // .addLayer(vectorfield)
-    // .addLayer(pathplot)
+    .addLayer(pathplot)
     // .addLayer(overlays);
 
 var loadData = function(data) {

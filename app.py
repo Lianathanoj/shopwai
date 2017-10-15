@@ -20,6 +20,7 @@ exit = (700, 300) # right middle
 current_location = entrance
 num_unfinished = 0
 num_finished = 0
+points = None
 
 class StockItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -94,8 +95,11 @@ def index():
                                              y_value=current_item[3]) for current_item in ordered_items]
                 db.session.add_all(ordered_items)
                 db.session.commit()
+            # print(find_coordinates_between_points(current_location, (current_items[0].x_value, current_items[0].y_value)))
+            global points
+            points = find_coordinates_between_points(current_location, (current_items[0].x_value, current_items[0].y_value))
             return redirect(url_for('category', id=category_id))
-    return redirect(url_for('category', id=1))
+    return redirect(url_for('category', id=1, points=None))
 
 @app.route('/category/<int:id>')
 def category(id):
@@ -105,7 +109,7 @@ def category(id):
     item_coordinates = [{"x": item.x_value, "y": item.y_value, "value": item.id} for item in items
                         if (item.x_value is not None and item.y_value is not None)]
     return render_template('index.html', items=items, item_coordinates=item_coordinates,
-                           categories=categories, category_now=category)
+                           categories=categories, category_now=category, points=points)
 
 @app.route('/new-category', methods=['GET', 'POST'])
 def new_category():
@@ -152,6 +156,7 @@ def done(id):
     num_finished += 1
     item = CurrentItem.query.get_or_404(id)
 
+    previous_location = current_location
     global current_location
     current_location = (item.x_value, item.y_value)
     print(current_location)
@@ -162,6 +167,8 @@ def done(id):
     db.session.add(done_item)
     db.session.delete(item)
     db.session.commit()
+    global points
+    points = find_coordinates_between_points(previous_location, current_location)
     return redirect(url_for('category', id=category.id))
 
 @app.route('/delete-item/<int:id>')
@@ -203,6 +210,16 @@ def greedy_algorithm(points, start=None):
 
 def euclidean_distance(first_point, second_point):
     return ((first_point.x_value - second_point.x_value)**2 + (first_point.y_value - second_point.y_value)**2) ** 0.5
+
+# [{"x": 23.8, "y": 30.6},{"x": 19.5, "y": 25.7},{"x": 14.5, "y": 25.7},{"x": 13.2, "y": 12.3}]
+# y = mx + b
+def find_coordinates_between_points(first_point, second_point):
+    slope = (second_point[1] - first_point[1]) / (second_point[0] - first_point[0])
+    y_intercept = first_point[1] - slope * first_point[0]
+    coordinates = []
+    for x_value in range(min(first_point[0], second_point[0]), max(first_point[0], second_point[0])):
+        coordinates.append({"x": x_value, "y": slope * x_value + y_intercept})
+    return coordinates
 
 if __name__ == '__main__':
     # init_db()

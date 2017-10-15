@@ -109,12 +109,26 @@
     </div>
 
     <script>
+        {% if points != None %}
+        var jsonData = {
+            "heatmap": {
+                "binSize": 10,
+                "map": {{item_coordinates|tojson}}
+            },
+            "pathplot": [{
+                 "id": "flt-1",
+                 "classes": "planned",
+                 "points": {{points|tojson}}
+            }]
+        };
+        {% else %}
         var jsonData = {
             "heatmap": {
                 "binSize": 10,
                 "map": {{item_coordinates|tojson}}
             }
         };
+        {% endif %}
     </script>
     <script src="//cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/materialize/0.97.8/js/materialize.min.js"></script>
