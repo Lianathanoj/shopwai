@@ -265,13 +265,18 @@ def find_coordinates_between_points(first_point, second_point):
         return None
     if (second_point[0] - first_point[0] != 0):
         slope = (second_point[1] - first_point[1]) / (second_point[0] - first_point[0])
-        y_intercept = first_point[1] - slope * first_point[0]
+        y_intercept = second_point[1] - slope * second_point[0]
         coordinates = []
         for x_value in range(min(first_point[0], second_point[0]), max(first_point[0], second_point[0])):
             coordinates.append({"x": x_value, "y": (slope * x_value + y_intercept)})
+    elif num_unfinished > 1:
+        current_items = CurrentItem.query.all()
+        current_items = [item for item in current_items if item.category_id == 1]
+        coordinates = find_coordinates_between_points((current_items[0].x_value, current_items[0].y_value),
+                                                      (current_items[1].x_value, current_items[1].y_value))
     else:
         coordinates = find_coordinates_between_points(current_location, exit)
-    return coordinates[len(coordinates) / 6 : 5 * len(coordinates) / 6]
+    return coordinates
 
 if __name__ == '__main__':
     # init_db()
