@@ -65,6 +65,7 @@ var xscale = d3.scale.linear()
 //     width: 50.0
 // }];
 
+
 mapdata[imagelayer.id()] = [{
     url: 'https://i.imgur.com/OOSKum8.jpg',
     x: 0,
@@ -85,8 +86,13 @@ var loadData = function(data) {
     mapdata[vectorfield.id()] = data.vectorfield;
     mapdata[pathplot.id()] = data.pathplot;
 
+    h = 600;
+    w = $('#demo').parent().width();
+
+    mapdata[imagelayer.id()][0].width = w;
+
     d3.select("#demo").append("svg")
-        .attr("height", 600).attr("width",700)
+        .attr("height", h).attr("width",w)
         .datum(mapdata).call(map);
 };
 

@@ -2,6 +2,69 @@ body {
     font-family: "Microsoft YaHei", "Open Sans", "Helvetica", Arial, sans-serif;
 }
 
+nav .brand-logo {
+    font-family: 'Pacifico', cursive;
+}
+.light-blue.lighten-1 {
+    background: #29b6f6; /* Old browsers */
+    background: -moz-linear-gradient(left, #29b6f6 0%, #4bd1d8 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #29b6f6 0%,#4bd1d8 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #29b6f6 0%,#4bd1d8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+}
+
+
+
+.tabs .tab a ,
+.tabs .tab a:hover,
+.tabs .tab a.active {
+    color: rgba(35, 61, 155, 1);
+    font-weight: bold;
+    font-size: 2.5vw;
+}
+.tabs .indicator {
+    background-color: rgba(35, 61, 155, 0.1);
+    top: 0;
+    height: 100%;
+    margin: 0 auto;
+    width: 40%;
+}
+#tabs-swipe-demo {
+    margin-bottom: 2vh;
+}
+
+.items {
+    padding: 3vw;
+}
+
+#demo svg {
+    width: 100%;
+}
+
+.imagelayer image {
+    width: 100%;
+}
+
+.tabs-content, #demo, #demo svg, #demo #map-layers {
+    height: 800px !important;
+}
+
+.heatmap rect {
+    x: x + 30vw;
+}
+
+i.left {
+    font-size: 5vh;
+}
+
+.card-panel {
+    font-size: 3vmin;
+}
+
+.map-controls {
+    display: none;
+}
+
 footer a:hover {
     border-bottom: 1px solid black;
 }
@@ -27,6 +90,10 @@ footer a:hover {
     cursor: move;
 }
 
+.carousel .carousel-item{
+  width:100%;
+}
+
 @media (max-width: 600px) {
     .nav-button {
         display: none;
@@ -45,7 +112,7 @@ footer a:hover {
 /*.RdYlBu .d6-4 {fill:#D73027;background:#D73027;color:#121212}*/
 /*.RdYlBu .d6-3 {fill:#FC8D59;background:#FC8D59;color:#121212}*/
 /*.RdYlBu .d6-2 {fill:#FEE090;background:#FEE090;color:#121212}*/
-/*.RdYlBu .d6-1 {fill:#4575B4;background:#4575B4;color:#4575B4}*/
+/*.RdYlBu .d6-1 {fill:#4575B4;background:#4575B4;color:#121212}*/
 
 /* overlays */
 .polygon {stroke:white;stroke-width:2px;fill-opacity:0.2}
