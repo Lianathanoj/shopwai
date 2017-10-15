@@ -5,6 +5,15 @@ body {
 nav .brand-logo {
     font-family: 'Pacifico', cursive;
 }
+.light-blue.lighten-1 {
+    background: #29b6f6; /* Old browsers */
+    background: -moz-linear-gradient(left, #29b6f6 0%, #4bd1d8 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #29b6f6 0%,#4bd1d8 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #29b6f6 0%,#4bd1d8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+}
+
+
 
 .tabs .tab a ,
 .tabs .tab a:hover,
